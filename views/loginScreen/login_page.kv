@@ -1,0 +1,121 @@
+#:kivy 2.0.1
+
+MDScreen: 
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar: 
+            title: 'Save Sampas' 
+            left_action_items: [ ["message-question", lambda x : x]]
+            icon_color: 1,1,1,1
+        LoginScreen:
+
+<CardNewUser>:
+    id: login_card 
+    password: password
+    family: family 
+    user: user
+
+    size_hint: .7, .5 
+    pos_hint: { 'center_x': .5, 'center_y': .5}
+    orientation: 'vertical'
+    elevation: 2 
+    MDBoxLayout:
+        size_hint_y: .2 
+        padding: [ 25, 0, 25, 0]
+        md_bg_color: app.theme_cls.primary_color
+        orientation: 'horizontal'
+        MDLabel: 
+            text: 'Criar novo usuário'
+            font_size: 16
+            theme_text_color: 'Custom'
+            text_color: 1,1,1,1
+        MDIconButton:
+            icon: 'close'
+            pos_hint: {'center_y': .5 }
+            theme_text_color: 'Custom'
+            text_color: 1,1,1,1
+            on_release: app.screens['Login'].close_card( login_card )
+    MDFloatLayout:
+        MDTextField:
+            id: user 
+            hint_text: 'Usuário:'
+            pos_hint: {'center_x': .5, 'center_y': .875 }
+            size_hint_x: .9 
+            mode: "rectangle"  
+
+        MDTextField:
+            id: password
+            hint_text: 'Dia do aniversário:'
+            pos_hint: {'center_x': .5, 'center_y': .65 }
+            size_hint_x: .9 
+            mode: "rectangle"        
+        
+        MDTextField:
+            id: family
+            hint_text: 'Nome da familia:'
+            pos_hint: {'center_x': .5, 'center_y': .425 }
+            size_hint_x: .9 
+            mode: "rectangle"
+
+        MDRaisedButton: 
+            text: 'Create'
+            pos_hint: {'center_x': .5, 'center_y': .15 }
+            size_hint_x: .9
+            size_hint_y: .1
+            on_release: app.screens['Login'].create_new_user( user.text, password.text, family.text ) 
+
+
+<LoginScreen@FloatLayout>: 
+    password_login: password_login
+    user_login: user_login 
+    MDIconButton: 
+        pos_hint: {'center_x': .5, 'center_y': .85 }
+        icon: 'language-python'
+        user_font_size: '72sp'
+        elevation_normal: 12
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_color
+    MDTextField: 
+        id: user_login
+        hint_text: 'User:'
+        size_hint_x: .9 
+        pos_hint: {'center_x': .5, 'center_y': .7 }
+        mode: "rectangle"
+    MDTextField: 
+        id: password_login 
+        hint_text: 'Senha:'
+        size_hint_x: .9 
+        pos_hint: {'center_x': .5, 'center_y': .575 }
+        mode: "rectangle"
+    MDRaisedButton: 
+        text: 'Login'
+        pos_hint: {'center_x': .5, 'center_y': .45 }
+        size_hint_x: .9
+        size_hint_y: .1
+        on_release: app.screens['Login'].login( user_login.text, password_login.text )
+    MDCheckbox:
+        id: chip_select
+        text: ''
+        check: True
+        pos_hint: { 'center_x': .1, 'center_y': .35}
+        size_hint: 0.1, 0.05
+        selected_chip_color: .21176470535294, .098039627451, 1, 1
+        on_release: app.screens['Login'].keep_data( user_login.text, password_login.text )
+    MDLabel: 
+        text: 'Salvar dados de login'
+        font_size: 12 
+        pos_hint: { 'center_x': .675, 'center_y': .35}
+    MDLabel:
+        text: 'Criar novo usuário?'
+        font_size: 16
+        pos_hint: {'center_y': .15}
+        halign: 'center'
+    MDTextButton:
+        id: card_button
+        text: 'Clique aqui'
+        font_size: 12
+        pos_hint: { 'center_x': .5, 'center_y': .1}
+        on_release: app.screens['Login'].raise_card()
+        theme_text_color: "Custom"
+        text_color: .5, .3, .95, 1
+        bold: True

@@ -1,0 +1,74 @@
+#:kivy 2.0.1
+
+<ExtratoList>
+    adaptive_height: True
+    TwoLineIconListItem:
+        text: "(050)-123-45-67"
+        secondary_text: "Mobile"
+        IconLeftWidget:
+            icon: 'phone'
+
+
+#
+#
+#
+<MonthsCards@MDFlatButton>:
+    text: root.month
+    theme_text_color: "Custom"
+    text_color: "orange"
+    size_hint_y: .75
+    pos_hint: {"center_x": .5, "center_y": .5}
+    md_bg_color: [ 0.75, 0.75, 0.75, 0.2 ]
+    padding: 10
+    
+
+#
+#
+#
+MDScreen:  
+    extrato_header: extrato_header
+    extrato_footer: extrato_footer
+    extrato_months: extrato_months
+    box: box 
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, 1
+
+        MDHeroTo:
+            id: extrato_header
+            tag: 'header'
+            pos_hint: {'center_x': .5, 'center_y' : 1-0.15/2 }
+            size_hint: 1, .15       
+        #
+        #
+        #
+        BoxLayout:
+            size_hint: 0.975, 0.85
+            pos_hint: {'center_x': 0.5,'center_y': 0.425 }
+            orientation: 'vertical'
+            ScrollView:
+                do_scroll_x: True
+                do_scroll_y: False
+                size_hint: 1, 0.1
+                pos_hint: { 'center_X': 0.5, 'center_y': 0.925}
+                MDBoxLayout:
+                    id: extrato_months
+                    adaptive_width: True
+                    spacing: '10sp'
+            
+            ScrollView:
+                size_hint: 1, 0.9
+                pos_hint: {'center_x': 0.5,'center_y': 0.425 }
+                MDGridLayout:
+                    id: box
+                    cols: 1
+                    adaptive_height: True
+        #
+        #
+        #
+        MDHeroTo:
+            id: extrato_footer
+            tag: 'footer'
+            size_hint: 1, 0.10
+            pos_hint: {'center_x': 0.5, 'center_y': 0.1 }

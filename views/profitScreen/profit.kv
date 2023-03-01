@@ -1,0 +1,37 @@
+#:kivy 2.0.1
+
+MDScreen: 
+    profit_header:profit_header
+    profit_footer:profit_footer
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        size_hint: 1, 1
+        
+        MDHeroTo:
+            id: profit_header
+            tag: 'header'
+            pos_hint: {'center_x': .5, 'center_y' : 1-0.15/2 }
+            size_hint: 1, .15
+        #
+        #
+        #        
+        BoxLayout:
+            size_hint: 0.975, 0.85
+            pos_hint: {'center_x': 0.5,'center_y': 0.425 }
+            orientation: 'vertical'
+            ScrollView:
+                BoxLayout:
+                    id: profit_id
+                    orientation: 'vertical'
+                    size_hint_y: None 
+                    spacing: "5dp"
+        #
+        #
+        #
+        MDBoxLayout:
+            size_hint: 1, 0.10
+            pos_hint: {'center_x': 0.5, 'center_y': 0.1 }
+            MDHeroTo:
+                id: profit_footer
+                tag: 'footer'
