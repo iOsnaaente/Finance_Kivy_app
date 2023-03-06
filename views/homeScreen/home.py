@@ -4,6 +4,16 @@ from kivymd.uix.card import MDCard
 from kivy.properties import StringProperty, NumericProperty,ColorProperty
 from kivy.lang import Builder 
 
+
+from kivy.utils import platform
+if platform == 'win':
+    import os 
+    PATH = os.path.dirname( __file__ ).removesuffix('\\views\\homeScreen')
+    import sys 
+    sys.path.insert( 0, PATH + '\\kivymd_extensions')
+    from pie_plot import PieGraph
+
+
 import os 
 PATH = os.path.dirname( __file__ )
 
@@ -12,6 +22,7 @@ from gestures4kivy import CommonGestures
 class SwipeScreen(MDScreen, CommonGestures):
     def cgb_horizontal_page(self, touch, right):
         MDApp.get_running_app().swipe_screen(right)
+
 
 
 class MDCardValue( MDCard ):
@@ -37,6 +48,15 @@ class MDCardValue( MDCard ):
             self.color_available = [255/255, 247/255, 85/255, 0.95 ]
         self.available_value = 'R$' + str( available_value )
         self.progress_value = round(used_value/to_use_value*100, 3)
+
+
+
+labels   = [      'Aluguel',    'Farmácia',      'Carro',          'Gás',  'Mercado' ]
+values   = [           1240,           450,          160,             75,       120  ]
+colors   = [      '#FF0000',     '#F0CAFE',    '#0000FF',      '#FFFF00',  '#ADFF2F' ]
+icons    = [         'home', 'medical-bag',        'car', 'gas-cylinder', 'shopping' ]
+types    = [ 'Contas fixas',    'Farmácia', 'Manutenção',          'Gás',  'Comida'  ]
+        
 
 from random import randint 
 
@@ -71,18 +91,35 @@ class Home( SwipeScreen ):
         self.PAGE.ids.user_name.text = user_name
         self.PAGE.ids.user_income.text = user_income
         
-        icons = ['home', 'horse', 'car', 'cloud', 'book-multiple-outline', 'pencil', 'pac-man', 'android', 'feet']
-        types = ['Mansão do Neymar', 'Pasto', 'Pneu novo', 'Roupas Carmen Steffens ', 'Papiros', 'Material escolar', 'Jogos retor', 'Reparo do celular', 'Tenis de corrida']
-        NUM_OBJ = 8
+        NUM_OBJ = len(labels)
         padding = 10 
         for i in range(NUM_OBJ):
             self.PAGE.ids.home_page_id.height = NUM_OBJ*100 + padding + 105 # jerk spaces ( init = 65, end = 60 )
             self.PAGE.ids.home_page_id.add_widget(   
                 MDCardValue( 
                     icon = icons[i],
-                    type = types[i],
+                    type = labels[i] + ' - ' + types[i],
                     used_value = randint(100, 10_000),
                     to_use_value = randint(100, 10_000)
-                ))
+                )
+            )
         # Jerk space 
-        self.PAGE.ids.home_page_id.add_widget( MDCard( size_hint_y = None, height = 70, padding = 10, md_bg_color = [0,0,0,0]) )
+        self.PAGE.ids.home_page_id.add_widget( 
+            MDCard( 
+                size_hint_y = None, 
+                height = 70, 
+                padding = 10, 
+                md_bg_color = [0,0,0,0]
+            ) 
+        )
+
+        self.PAGE.ids.graph_box.add_widget( 
+            PieGraph(
+                values = values,
+                colors = colors,
+                labels = labels,
+                legend = True,
+                legend_font_size = 12,
+                bd_pie_color = [0,0,0,0.75]
+            )
+        )

@@ -1,25 +1,45 @@
 #:kivy 2.0.1 
-<PieGraph@MDFloatLayout>:
+<PieGraph>:
     graph_zone:graph_zone
     legend_zone:legend_zone
-    pos_hint: {'center_x': 0.5,'center_y': 0.5}
-    size_hint: 1, 1
-    orientation: 'horizontal'
-    MDGridLayout:
-        cols: 2
+    MDBoxLayout: 
+        size_hint: 1, 1
+        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        orientation: 'horizontal'
         MDBoxLayout:
             id: graph_zone
-            size_hint: 0.6, 0.5
+            size_hint: 0.7, 1
             pos_hint: {'left': 1,'center_y': 0.5}
         MDBoxLayout:
             id: legend_zone
-            size_hint: 0.4, 0.5
+            size_hint_x: 0.3                  
             orientation: 'vertical'
-            pos_hint: {'center_x': .5,'center_y': 0.5}
+            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+
+            
 
 MDScreen: 
-    BoxLayout:
-        id: graph_box
-        pos_hint: {'center_x': 0.5,'center_y': 0.5}
-        size_hint: 1, .5
+    MDBoxLayout:
+        size_hint: 1, 1
+        orientation: 'vertical'
+        
+        MDBoxLayout:
+            size_hint: 1, 0.3
+            MDLabel:
+                text: ""
+                md_bg_color: [0.9,0.85,0.24, 0.9]
+        
+        MDBoxLayout:
+            id: graph_box
+            size_hint: 1, .4
+            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+
+                
+        MDBoxLayout:
+            size_hint: 1, 0.3
+            MDLabel:
+                text: ""
+                md_bg_color: [0.3,1,0.3,0.9]
+
+
 

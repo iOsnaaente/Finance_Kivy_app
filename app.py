@@ -5,14 +5,18 @@ from kivymd.uix.screenmanager import MDScreenManager
 from screens import LoginPage, HomePage, ExtratoPage, ProfitPage
 
 
-
-
 # Plataform definitions
 # Window Linux or Android 
 from kivy.utils import platform
 if platform == 'win':
+    # Resolution 
     from kivy.core.window import Window
     Window.size = (435, 700)
+    #  Second SCREEN  #
+    ###################
+    Window.left = -500
+    ###################
+    Window.top  = 50
 
 
 class App( MDApp ):
@@ -29,7 +33,7 @@ class App( MDApp ):
         self.theme_cls.primary_palette = "DeepPurple"
         self.theme_cls.accent_palette = "DeepOrange"        
         self.theme_cls.primary_hue = '400'
-        self.theme_cls.theme_style = "Dark"
+        self.theme_cls.theme_style = "Light"
 
         # To navigate through the screens
         self.enable_swipe = True

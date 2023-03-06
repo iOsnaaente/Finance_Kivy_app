@@ -1,33 +1,33 @@
-
-from kivy.utils import platform
-if platform == 'win':
-    # Resolution 
-    import os 
-    PATH = os.path.dirname( __file__ )
-    from kivy.core.window import Window
-    Window.size = (435, 700)
-    Window.left = -500  # Second SCREEN#
-    Window.top  = 50
-
-
-from kivy.properties import StringProperty, NumericProperty, ColorProperty, ObjectProperty, ListProperty
+from kivy.properties import ColorProperty, ListProperty
 from kivymd.uix.button import MDRectangleFlatIconButton 
 from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.label import MDLabel
-
-from kivy.lang import Builder
-from kivy.clock import Clock
-
-from kivymd.tools.hotreload.app import MDApp
-
-from scipy.interpolate import make_interp_spline 
 import matplotlib.pyplot as plt 
 import matplotlib as mpl 
 import numpy as np 
 
-from widgets.kivyplt import MatplotFigure
+from kivyplt import MatplotFigure
+from kivy.clock import Clock
+
+KV_PIE_PLOT = '''
+<PieGraph>:
+    graph_zone:graph_zone
+    legend_zone:legend_zone
+    MDBoxLayout: 
+        size_hint: 1, 1
+        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        orientation: 'horizontal'
+        MDBoxLayout:
+            id: graph_zone
+            size_hint: 0.7, 1
+            pos_hint: {'left': 1,'center_y': 0.5}
+        MDBoxLayout:
+            id: legend_zone
+            size_hint_x: 0.3                  
+            orientation: 'vertical'
+            pos_hint: {'center_x': 0.5,'center_y': 0.5}
+'''
+
 
 class PieGraph( MDFloatLayout ):
     bd_widget_color = ColorProperty()
@@ -45,8 +45,8 @@ class PieGraph( MDFloatLayout ):
     border = 0.01
     def __init__(
             self, 
-            values, 
-            colors, 
+            values : list , 
+            colors : list , 
             labels = [], 
             explodes = [], 
             bd_widget_color = 'white', 
@@ -93,7 +93,7 @@ class PieGraph( MDFloatLayout ):
         center_circle = plt.Circle( (0, 0), self.radius_in - self.border, fc = self.bd_widget_color)
 
         chart = mpl.figure.Figure( )
-        # bd_color      = plt.Rectangle( (0,0), self.ids.graph_here.width, self.ids.graph_here.height, fc = self.bd_widget_color  )
+        # bd_color = plt.Rectangle( (0,0), self.ids.graph_here.width, self.ids.graph_here.height, fc = self.bd_widget_color  )
         # chart.gca().add_artist( bd_color )
         
         chart.gca().add_artist( bd_out_circle )
@@ -139,65 +139,3 @@ class PieGraph( MDFloatLayout ):
                     )
                 )
             self.ids.legend_zone.adaptive_height = True
-
-
-
-labels   = [ 'Aluguel', 'Farmácia', 'Condominio', 'Internet','Gás', 'Carro']
-values   = [ 1240, 450, 160, 75, 120, 700]
-colors   = [ '#FF0000', '#F0CAFE', '#0000FF', '#FFFF00', '#ADFF2F', '#FFA500']
-
-class Graph(MDApp):
-    KV = PATH + '\\graph.kv'
-    DEBUG = True  
-    KV_FILES = [PATH + "\\graph.kv"]
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def build_app(self):
-        self.PAGE = Builder.load_file(self.KV)
-        self.PAGE.ids.graph_box.clear_widgets()
-        self.PAGE.ids.graph_box.add_widget(
-            PieGraph(
-                labels   = labels,
-                values   = values,
-                colors   = colors,
-                legend   = True,
-                bd_pie_color = [0,0,0,0.75]
-            )
-
-        )
-        return self.PAGE
-
-
-Graph().run()
-
-
-
-
-
-def chart( ):
-    chart = mpl.figure.Figure( figsize = (2,2) )
-    x = np.array( [ x for x in range(10) ] )
-    y = [ 0, 600, 400, 100, 500, 1000, 750, 400, 1000, 100 ]
-    xlabels = [ str(i) for i in range(10) ]
-    ny = []
-    for e in y:
-        if e not in ny:
-            ny.append(e)
-    ny.sort()
-    ylabels = [ 'R$' + str(i) for i in ny ] 
-    chart.gca().set_xticklabels( xlabels )
-    chart.gca().set_yticklabels( ylabels )
-    xy_spline = make_interp_spline( x, y )
-    x1 = np.linspace( x.min(), x.max(), 500 )
-    y1 = xy_spline(x1)
-    chart.gca().spines['top'].set_visible(False)
-    chart.gca().spines['right'].set_visible(False)
-    chart.gca().spines['left'].set_visible(False)
-    chart.gca().plot(x1, y1)
-    plot = MatplotFigure( chart )
-    # self.PAGE.ids.graph_box.clear_widgets()
-    # self.PAGE.ids.graph_box.add_widget( plot )
-
-
-
