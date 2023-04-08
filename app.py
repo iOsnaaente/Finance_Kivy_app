@@ -1,6 +1,7 @@
 # from kivymd.tools.hotreload.app import MDApp
 from kivymd.app import MDApp
 
+
 from kivymd.uix.screenmanager import MDScreenManager
 from screens import LoginPage, HomePage, ExtratoPage, ProfitPage
 
@@ -33,7 +34,7 @@ class App( MDApp ):
         self.theme_cls.primary_palette = "DeepPurple"
         self.theme_cls.accent_palette = "DeepOrange"        
         self.theme_cls.primary_hue = '400'
-        self.theme_cls.theme_style = "Light"
+        self.theme_cls.theme_style = "Dark"
 
         # To navigate through the screens
         self.enable_swipe = True
@@ -88,6 +89,7 @@ class App( MDApp ):
 
     def change_screen( self, screen  ):
         self.manager.current = screen
+        
     def change_swipe( self, state ):
         self.enable_swipe = state 
     
